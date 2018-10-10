@@ -21,8 +21,15 @@ public:
 	
 	SDL_Texture* graphics = nullptr;
 	SDL_Rect ground;
+	SDL_Rect foreground;
 	SDL_Rect background;
 	Animation flag;
+	Animation girl;
+	Animation dudes;
+	Animation shitFace;
+	Animation columbus;
+	Animation shitMan;
+	Animation tinkyWinky;
 };
 
 #endif // __MODULESCENEKEN_H__

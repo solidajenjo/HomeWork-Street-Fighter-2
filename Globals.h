@@ -42,4 +42,6 @@ enum update_status
 #define VSYNC true
 #define TITLE "Super Awesome Game"
 
+#define LEFT_BOUND 0
+#define RIGHT_BOUND -600
 #endif //__GLOBALS_H__
