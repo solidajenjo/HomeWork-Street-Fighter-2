@@ -81,7 +81,9 @@ bool ModuleSceneKen::Start()
 	
 	graphics = App->textures->Load("ken_stage.png");
 
+
 	// TODO 7: Enable the player module
+	App->player->Enable();
 	// TODO 0: trigger background music
 	App->audio->PlayMusic("ken.ogg");
 	
@@ -103,21 +105,21 @@ bool ModuleSceneKen::CleanUp()
 update_status ModuleSceneKen::Update()
 {
 	// TODO 5: make sure the ship goes up and down
-
+	float tideMovement = sinf(SDL_GetTicks() / 200) * 3; // movement = (ticks / frequency) * amplitude;
 	// Draw everything --------------------------------------
 	// TODO 1: Tweak the movement speed of the sea&sky + flag to your taste
 	App->renderer->Blit(graphics, -150, 0, &background, 0.35f); // sea and sky
 	App->renderer->Blit(graphics, 410, 8, &(flag.GetCurrentFrame()), 0.35f); // flag animation
-	App->renderer->Blit(graphics, -30, -28, &foreground, 0.5f); // foreground
+	App->renderer->Blit(graphics, -30, -26 + tideMovement, &foreground, 0.5f); // foreground
 	// TODO 3: Draw the ship. Be sure to tweak the speed.
 
 	// TODO 6: Draw the girl. Make sure it follows the ship movement!
-	App->renderer->Blit(graphics, 168, 100, &(girl.GetCurrentFrame()), 0.5f); // gril animation
-	App->renderer->Blit(graphics, 106, 92, &(dudes.GetCurrentFrame()), 0.5f); // dudes animation
-	App->renderer->Blit(graphics, 203, 100, &(shitFace.GetCurrentFrame()), 0.5f); // shitFace animation
-	App->renderer->Blit(graphics, 266, 92, &(columbus.GetCurrentFrame()), 0.5f); // columbus animation
-	App->renderer->Blit(graphics, 65, 20, &(shitMan.GetCurrentFrame()), 0.5f); // shitMan animation
-	App->renderer->Blit(graphics, 106, 20, &(tinkyWinky.GetCurrentFrame()), 0.5f); // shitMan animation
+	App->renderer->Blit(graphics, 168, 103 + tideMovement, &(girl.GetCurrentFrame()), 0.5f); // gril animation
+	App->renderer->Blit(graphics, 106, 95 + tideMovement, &(dudes.GetCurrentFrame()), 0.5f); // dudes animation
+	App->renderer->Blit(graphics, 203, 103 + tideMovement, &(shitFace.GetCurrentFrame()), 0.5f); // shitFace animation
+	App->renderer->Blit(graphics, 266, 95 + tideMovement, &(columbus.GetCurrentFrame()), 0.5f); // columbus animation
+	App->renderer->Blit(graphics, 65, 22 + tideMovement, &(shitMan.GetCurrentFrame()), 0.5f); // shitMan animation
+	App->renderer->Blit(graphics, 106, 22 + tideMovement, &(tinkyWinky.GetCurrentFrame()), 0.5f); // shitMan animation
 
 	App->renderer->Blit(graphics, 0, 170, &ground);
 

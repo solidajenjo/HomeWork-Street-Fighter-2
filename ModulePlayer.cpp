@@ -30,6 +30,19 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	backward.speed = 0.1f;
 
 	// TODO 8: setup the walk forward animation from ryu4.png
+
+	forward.frames.push_back({ 0, 131, 65, 90 });
+	forward.frames.push_back({ 75, 129, 63, 90 });
+	forward.frames.push_back({ 160, 128, 65, 90 });
+	forward.frames.push_back({ 255, 127, 65, 90 });
+	forward.frames.push_back({ 340, 128, 65, 91 });
+	forward.frames.push_back({ 425, 129, 62, 90 });
+	forward.speed = 0.1f;
+
+	charging.frames.push_back({ 241, 1549, 95, 90 });
+	charging.frames.push_back({ 242, 1549, 95, 90 });
+	charging.frames.push_back({ 240, 1549, 95, 90 });
+	charging.speed = 0.3f;
 }
 
 ModulePlayer::~ModulePlayer()
@@ -63,6 +76,40 @@ update_status ModulePlayer::Update()
 	// TODO 9: Draw the player with its animation
 	// make sure to detect player movement and change its
 	// position while cycling the animation(check Animation.h)
+	bool chargingKame = false;
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT) {
+		App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(charging.GetCurrentFrame()));				
+		chargingKame = true;
+	}
+	if (!chargingKame)
+	{
+		int speed = 4;
+
+		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+			App->renderer->camera.y += speed;
+
+		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+			App->renderer->camera.y -= speed;
+
+		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			App->renderer->camera.x += speed;
+
+		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			App->renderer->camera.x -= speed;
+
+		if (App->renderer->camera.x < lastX) // moving forward
+		{
+			App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(forward.GetCurrentFrame()));
+		}
+		else if (App->renderer->camera.x > lastX) // moving backward
+		{
+			App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(backward.GetCurrentFrame()));
+		}
+		else { //idle
+			App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(idle.GetCurrentFrame()));
+		}
+	}
+	lastX = App->renderer->camera.x;
 
 	return UPDATE_CONTINUE;
 }

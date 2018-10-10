@@ -23,7 +23,12 @@ public:
 	SDL_Texture* graphics = nullptr;
 	Animation idle;
 	Animation backward;
+	Animation forward;
+	Animation charging;
 	iPoint position;
+
+private:
+	int lastX = SCREEN_WIDTH / 2;
 };
 
 #endif // __MODULEPLAYER_H__
