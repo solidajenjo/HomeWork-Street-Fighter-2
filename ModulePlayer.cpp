@@ -3,6 +3,7 @@
 #include "ModulePlayer.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "ModuleAudio.h"
 #include "ModuleTextures.h"
 #include "SDL/include/SDL.h"
 
@@ -39,10 +40,21 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	forward.frames.push_back({ 425, 129, 62, 90 });
 	forward.speed = 0.1f;
 
-	charging.frames.push_back({ 241, 1549, 95, 90 });
+	charging.frames.push_back({ 578, 1814, 95, 90 });
 	charging.frames.push_back({ 242, 1549, 95, 90 });
-	charging.frames.push_back({ 240, 1549, 95, 90 });
+	charging.frames.push_back({ 577, 1814, 95, 90 });
 	charging.speed = 0.3f;
+
+	kameRect.x = 0;
+	kameRect.y = 0;
+	kameRect.w = 512;
+	kameRect.h = 512;
+
+	background.x = 0;
+	background.y = 0;
+	background.w = 768;
+	background.h = 350;
+
 }
 
 ModulePlayer::~ModulePlayer()
@@ -56,7 +68,15 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	graphics = App->textures->Load("ryu4.png"); // arcade version
+	kameEffect = App->textures->Load("effect.png");
+	kameEffectCharged = App->textures->Load("effect2.png");
+	blackFilter = App->textures->Load("blackFilter.png");
+	blueFilter = App->textures->Load("blueFilter.png");
 
+	alAtaquerFX = App->audio->LoadFx("alAtaque.wav");
+	noPuedeSerFX = App->audio->LoadFx("noPuedeSer.wav");
+	epetecanFX = App->audio->LoadFx("epetecan.wav");
+	playerBusy = false;
 	return true;
 }
 
@@ -75,22 +95,48 @@ update_status ModulePlayer::Update()
 {
 	// TODO 9: Draw the player with its animation
 	// make sure to detect player movement and change its
-	// position while cycling the animation(check Animation.h)
-	bool chargingKame = false;
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT) {
-		App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(charging.GetCurrentFrame()));				
-		chargingKame = true;
-	}
-	if (!chargingKame)
+	// position while cycling the animation(check Animation.h)	
+	float ryuPos = (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f;
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
 	{
-		int speed = 4;
+		kameSpeed = 0;
+		kameAngle = 0;
+		kameCharged = false;
+		App->audio->PlayFx(alAtaquerFX);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_UP)
+	{
+		if (kameCharged)
+		{
+			App->audio->PlayFx(epetecanFX);
+		}
+		else
+		{
+			App->audio->PlayFx(noPuedeSerFX);
+		}
+		playerBusy = false;
+	}
 
+	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT) {		
+		if (kameSpeed < 5) kameSpeed += 0.04f;
+		else kameCharged = true;
+		kameAngle += kameSpeed;	
+		App->renderer->Blit(blackFilter, -150, 0, &background);
+		App->renderer->Blit(graphics, ryuPos,  120, &(charging.GetCurrentFrame()));			
+		//if (rand() % 100 > 50) App->renderer->Blit(blueFilter, -150, 0, &background);
+		App->renderer->Blit(kameEffect, ryuPos - 240, -102, &kameRect, 1.0f, kameAngle);
+		if (kameCharged && (rand() % 100 > 50)) App->renderer->Blit(kameEffectCharged, ryuPos - 240, -102, &kameRect, 1.0f, kameAngle);
+		playerBusy = true;
+	}
+	if (!playerBusy)
+	{			
+		/*
 		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 			App->renderer->camera.y += speed;
 
 		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 			App->renderer->camera.y -= speed;
-
+		*/
 		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			App->renderer->camera.x += speed;
 
@@ -99,17 +145,17 @@ update_status ModulePlayer::Update()
 
 		if (App->renderer->camera.x < lastX) // moving forward
 		{
-			App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(forward.GetCurrentFrame()));
+			App->renderer->Blit(graphics, ryuPos, 120, &(forward.GetCurrentFrame()));
 		}
 		else if (App->renderer->camera.x > lastX) // moving backward
 		{
-			App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(backward.GetCurrentFrame()));
+			App->renderer->Blit(graphics, ryuPos, 120, &(backward.GetCurrentFrame()));
 		}
 		else { //idle
-			App->renderer->Blit(graphics, (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f, 120, &(idle.GetCurrentFrame()));
+			App->renderer->Blit(graphics, ryuPos, 120, &(idle.GetCurrentFrame()));
 		}
-	}
-	lastX = App->renderer->camera.x;
+		lastX = App->renderer->camera.x;
+	}	
 
 	return UPDATE_CONTINUE;
 }
