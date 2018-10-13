@@ -23,4 +23,18 @@ public:
 			current_frame = 0.0f;
 		return frames[(int)current_frame];
 	}
+
+	SDL_Rect& GetLastFrame()
+	{
+		return frames[frames.size() - 1];
+	}
+
+	void reset() {
+		current_frame = 0.0f;
+	}
+
+	bool isFinished()
+	{
+		return (int)current_frame == frames.size() - 1;
+	}
 };

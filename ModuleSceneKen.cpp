@@ -114,9 +114,9 @@ update_status ModuleSceneKen::Update()
 	// TODO 3: Draw the ship. Be sure to tweak the speed.
 
 	// TODO 6: Draw the girl. Make sure it follows the ship movement!
-	App->renderer->Blit(graphics, 168, 103 + tideMovement, &(girl.GetCurrentFrame()), 0.5f); // gril animation
+	App->renderer->Blit(graphics, 170, 103 + tideMovement, &(girl.GetCurrentFrame()), 0.5f); // gril animation
 	App->renderer->Blit(graphics, 106, 95 + tideMovement, &(dudes.GetCurrentFrame()), 0.5f); // dudes animation
-	App->renderer->Blit(graphics, 203, 103 + tideMovement, &(shitFace.GetCurrentFrame()), 0.5f); // shitFace animation
+	App->renderer->Blit(graphics, 202, 103 + tideMovement, &(shitFace.GetCurrentFrame()), 0.5f); // shitFace animation
 	App->renderer->Blit(graphics, 266, 95 + tideMovement, &(columbus.GetCurrentFrame()), 0.5f); // columbus animation
 	App->renderer->Blit(graphics, 65, 22 + tideMovement, &(shitMan.GetCurrentFrame()), 0.5f); // shitMan animation
 	App->renderer->Blit(graphics, 106, 22 + tideMovement, &(tinkyWinky.GetCurrentFrame()), 0.5f); // shitMan animation

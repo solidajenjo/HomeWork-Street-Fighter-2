@@ -45,6 +45,24 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	charging.frames.push_back({ 577, 1814, 95, 90 });
 	charging.speed = 0.3f;
 
+	kick.frames.push_back({ 0, 650, 80, 105 });
+	kick.frames.push_back({ 80, 650, 80, 105 });
+	kick.frames.push_back({ 160, 650, 100, 105 });
+	kick.frames.push_back({ 80, 650, 80, 105 });
+	kick.frames.push_back({ 0, 650, 80, 105 });
+	kick.speed = 0.1f;
+
+	punch.frames.push_back({ 245, 261, 80, 105 });
+	punch.frames.push_back({ 325, 261, 84, 105 });
+	punch.frames.push_back({ 426, 261, 120, 105 });
+	punch.frames.push_back({ 325, 261, 84, 105 });
+	punch.frames.push_back({ 245, 261, 80, 105 });
+	punch.speed = 0.1f;
+
+	kameBall.frames.push_back({ 491, 1554, 54, 51 });
+	kameBall.frames.push_back({ 545, 1554, 68, 51 });
+	kameBall.speed = 0.1f;
+
 	kameRect.x = 0;
 	kameRect.y = 0;
 	kameRect.w = 512;
@@ -52,8 +70,13 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 
 	background.x = 0;
 	background.y = 0;
-	background.w = 768;
-	background.h = 350;
+	background.w = 1024;
+	background.h = 469;
+
+	ryuKameRect.x = 350;
+	ryuKameRect.y = 1547;
+	ryuKameRect.w = 120;
+	ryuKameRect.h = 92;	
 
 }
 
@@ -77,6 +100,10 @@ bool ModulePlayer::Start()
 	noPuedeSerFX = App->audio->LoadFx("noPuedeSer.wav");
 	epetecanFX = App->audio->LoadFx("epetecan.wav");
 	playerBusy = false;
+	ryuPos = (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f;
+	timer = 0;
+	kameStatus = READY;
+
 	return true;
 }
 
@@ -95,67 +122,119 @@ update_status ModulePlayer::Update()
 {
 	// TODO 9: Draw the player with its animation
 	// make sure to detect player movement and change its
-	// position while cycling the animation(check Animation.h)	
-	float ryuPos = (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f;
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-	{
-		kameSpeed = 0;
-		kameAngle = 0;
-		kameCharged = false;
-		App->audio->PlayFx(alAtaquerFX);
+	// position while cycling the animation(check Animation.h)
+	if (SDL_GetTicks() < timer) { //ryu is doing something
+		switch (ryuAction)
+		{
+			case KAME:
+				App->renderer->Blit(graphics, ryuPos - 5, 120, &ryuKameRect);
+				break;
+			case KICK:
+				if (!kick.isFinished())
+					App->renderer->Blit(graphics, ryuPos, 110, &(kick.GetCurrentFrame()));
+				else
+					timer = SDL_GetTicks();
+				break;
+			case PUNCH:
+				if (!punch.isFinished())
+					App->renderer->Blit(graphics, ryuPos, 110, &(punch.GetCurrentFrame()));
+				else
+					timer = SDL_GetTicks();
+				break;
+		}
 	}
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_UP)
-	{
-		if (kameCharged)
-		{
-			App->audio->PlayFx(epetecanFX);
-		}
-		else
-		{
-			App->audio->PlayFx(noPuedeSerFX);
-		}
+	else { //ryu controls
 		playerBusy = false;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT) {		
-		if (kameSpeed < 5) kameSpeed += 0.04f;
-		else kameCharged = true;
-		kameAngle += kameSpeed;	
-		App->renderer->Blit(blackFilter, -150, 0, &background);
-		App->renderer->Blit(graphics, ryuPos,  120, &(charging.GetCurrentFrame()));			
-		//if (rand() % 100 > 50) App->renderer->Blit(blueFilter, -150, 0, &background);
-		App->renderer->Blit(kameEffect, ryuPos - 240, -102, &kameRect, 1.0f, kameAngle);
-		if (kameCharged && (rand() % 100 > 50)) App->renderer->Blit(kameEffectCharged, ryuPos - 240, -102, &kameRect, 1.0f, kameAngle);
-		playerBusy = true;
-	}
-	if (!playerBusy)
-	{			
-		/*
-		if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-			App->renderer->camera.y += speed;
-
-		if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-			App->renderer->camera.y -= speed;
-		*/
-		if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-			App->renderer->camera.x += speed;
-
-		if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-			App->renderer->camera.x -= speed;
-
-		if (App->renderer->camera.x < lastX) // moving forward
+		if ((kameStatus == READY || kameStatus == RELEASED) && App->input->GetKey(SDL_SCANCODE_X) == KEY_DOWN)
 		{
-			App->renderer->Blit(graphics, ryuPos, 120, &(forward.GetCurrentFrame()));
+			ryuAction = KICK;
+			kameStatus = READY;
+			timer = SDL_GetTicks() + 1000;
+			kick.reset();
+			playerBusy = true;
 		}
-		else if (App->renderer->camera.x > lastX) // moving backward
+		if ((kameStatus == READY || kameStatus == RELEASED) && App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 		{
-			App->renderer->Blit(graphics, ryuPos, 120, &(backward.GetCurrentFrame()));
+			ryuAction = PUNCH;
+			kameStatus = READY;
+			timer = SDL_GetTicks() + 1000;
+			punch.reset();
+			playerBusy = true;
 		}
-		else { //idle
-			App->renderer->Blit(graphics, ryuPos, 120, &(idle.GetCurrentFrame()));
+		if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
+		{
+			kameSpeed = 0;
+			kameAngle = 0;
+			kameStatus = CHARGING;
+			App->audio->PlayFx(alAtaquerFX);
 		}
-		lastX = App->renderer->camera.x;
-	}	
+		if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_UP)
+		{
+			if (kameStatus == CHARGED)
+			{
+				App->audio->PlayFx(epetecanFX);
+				timer = SDL_GetTicks() + 1000;
+				ryuAction = KAME;
+				kameStatus = RELEASED;
+				kamePos = ryuPos + 90;
+				playerBusy = true;
+			}
+			else if (kameStatus == CHARGING)
+			{
+				App->audio->PlayFx(noPuedeSerFX);
+				playerBusy = false;
+				kameStatus = READY;
+			}
+		}
 
+		if ((kameStatus == CHARGED || kameStatus == CHARGING) && App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT) {
+			if (kameSpeed < 5) kameSpeed += 0.04f;
+			else kameStatus = CHARGED;
+			kameAngle += kameSpeed;
+			App->renderer->Blit(blackFilter, 0, 0, &background);
+			App->renderer->Blit(graphics, ryuPos, 120, &(charging.GetCurrentFrame()));			
+			App->renderer->Blit(kameEffect, ryuPos - 240, -102, &kameRect, 1.0f, kameAngle);
+			if (kameStatus == CHARGED && (rand() % 100 > 50)) App->renderer->Blit(kameEffectCharged, ryuPos - 240, -102, &kameRect, 1.0f, kameAngle);
+			playerBusy = true;
+		}
+		if (!playerBusy)
+		{
+			/*
+			if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+				App->renderer->camera.y += speed;
+
+			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+				App->renderer->camera.y -= speed;
+			*/
+			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+			{
+				ryuPos -= speed * 0.5f;
+				if (ryuPos <= (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f)
+					App->renderer->camera.x += speed;
+			}
+			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			{
+				ryuPos += speed * 0.5f;
+				if (ryuPos >= (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f)
+					App->renderer->camera.x -= speed;
+			}
+			if (ryuPos < lastX) // moving forward
+			{
+				App->renderer->Blit(graphics, ryuPos, 120, &(forward.GetCurrentFrame()));
+			}
+			else if (ryuPos > lastX) // moving backward
+			{
+				App->renderer->Blit(graphics, ryuPos, 120, &(backward.GetCurrentFrame()));
+			}
+			else { //idle
+				App->renderer->Blit(graphics, ryuPos, 120, &(idle.GetCurrentFrame()));
+			}
+			lastX = ryuPos;
+		}
+	}
+	if (kameStatus == RELEASED) {
+		kamePos += 4;
+		App->renderer->Blit(graphics, kamePos, 130, &(kameBall.GetCurrentFrame()));
+	}
 	return UPDATE_CONTINUE;
 }
