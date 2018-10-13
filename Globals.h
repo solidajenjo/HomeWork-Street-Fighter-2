@@ -43,5 +43,5 @@ enum update_status
 #define TITLE "Super Awesome Game"
 
 #define LEFT_BOUND 0
-#define RIGHT_BOUND -600
+#define RIGHT_BOUND -700
 #endif //__GLOBALS_H__

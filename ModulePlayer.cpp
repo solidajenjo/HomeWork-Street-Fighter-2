@@ -50,14 +50,14 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	kick.frames.push_back({ 160, 650, 100, 105 });
 	kick.frames.push_back({ 80, 650, 80, 105 });
 	kick.frames.push_back({ 0, 650, 80, 105 });
-	kick.speed = 0.1f;
+	kick.speed = 0.2f;
 
 	punch.frames.push_back({ 245, 261, 80, 105 });
 	punch.frames.push_back({ 325, 261, 84, 105 });
 	punch.frames.push_back({ 426, 261, 120, 105 });
 	punch.frames.push_back({ 325, 261, 84, 105 });
 	punch.frames.push_back({ 245, 261, 80, 105 });
-	punch.speed = 0.1f;
+	punch.speed = 0.2f;
 
 	kameBall.frames.push_back({ 491, 1554, 54, 51 });
 	kameBall.frames.push_back({ 545, 1554, 68, 51 });
@@ -208,13 +208,15 @@ update_status ModulePlayer::Update()
 			*/
 			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			{
-				ryuPos -= speed * 0.5f;
+				if (ryuPos > LEFT_BOUND)
+					ryuPos -= speed * 0.5f;
 				if (ryuPos <= (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f)
-					App->renderer->camera.x += speed;
+					App->renderer->camera.x += speed;			
 			}
 			if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 			{
-				ryuPos += speed * 0.5f;
+				if (ryuPos < -RIGHT_BOUND)
+					ryuPos += speed * 0.5f;
 				if (ryuPos >= (SCREEN_WIDTH / 4) - App->renderer->camera.x * 0.5f)
 					App->renderer->camera.x -= speed;
 			}
