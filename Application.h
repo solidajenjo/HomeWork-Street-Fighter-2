@@ -36,6 +36,7 @@ public:
 	ModulePlayer* player;
 	ModuleSceneKen* scene_ken;
 	ModuleSceneHonda* scene_honda;
+	Module* currentScene;
 
 private:
 

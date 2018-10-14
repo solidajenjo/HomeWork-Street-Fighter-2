@@ -32,6 +32,21 @@ ModuleSceneHonda::ModuleSceneHonda(bool start_enabled) : Module(start_enabled)
 	ceiling.y = 0;
 	ceiling.w = 782;
 	ceiling.h = 60;
+
+	pool.x = 310;
+	pool.y = 311;
+	pool.w = 339;
+	pool.h = 58;
+
+	water.frames.push_back({ 8, 448, 284, 8 });
+	water.frames.push_back({ 296, 448, 284, 12 });
+	water.frames.push_back({ 588, 448, 284, 19 });
+	water.speed = 0.1f;
+
+	fuji.frames.push_back({224, 64, 224, 104});
+	fuji.frames.push_back({ 456, 64, 224, 104 });	
+	fuji.speed = 0.05f;
+
 }
 
 
@@ -44,15 +59,18 @@ bool ModuleSceneHonda::Start()
 	LOG("Loading honda scene");
 	graphics = App->textures->Load("honda_stage.png");
 	App->player->Enable();
-	//App->audio->PlayMusic("honda.ogg");
+	App->audio->PlayMusic("honda.ogg");
 	return true;
 }
 
 update_status ModuleSceneHonda::Update()
 {	
-	App->renderer->Blit(graphics, -85, 178, &ground, 0.9f);
+	App->renderer->Blit(graphics, -85, 178, &ground, 0.9f);	
 	App->renderer->Blit(graphics, -50, 48, &background, 0.55f);	
+	App->renderer->Blit(graphics, 137, 55, &(fuji.GetCurrentFrame()), 0.55f);
 	App->renderer->Blit(graphics, -57, 28, &side, 0.55f);
+	App->renderer->Blit(graphics, 90, 121, &pool, 0.6f);
+	App->renderer->Blit(graphics, 116, 134, &(water.GetCurrentFrame()), 0.6f);
 	App->renderer->Blit(graphics, -120, -8, &ceiling, 0.69f);
 	return UPDATE_CONTINUE;
 }

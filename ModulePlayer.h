@@ -39,7 +39,6 @@ public:
 	SDL_Texture* kameEffectCharged = nullptr;
 	SDL_Texture* blackFilter = nullptr;
 	SDL_Texture* blueFilter = nullptr;
-	SDL_Texture* ryuKame = nullptr;
 	SDL_Rect ryuKameRect;
 	SDL_Rect kameRect;
 	SDL_Rect background;

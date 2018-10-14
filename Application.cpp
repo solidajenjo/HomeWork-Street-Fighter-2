@@ -22,15 +22,17 @@ Application::Application()
 	modules.push_back(audio = new ModuleAudio());
 
 	// Game Modules
-	modules.push_back(scene_honda = new ModuleSceneHonda(false));
-	//modules.push_back(scene_ken = new ModuleSceneKen(false));
+	scene_honda = new ModuleSceneHonda(false);
+	currentScene = scene_ken = new ModuleSceneKen(false);	
+	modules.push_back(scene_ken);
+	modules.push_back(scene_honda);
 	modules.push_back(player = new ModulePlayer(false));
 	modules.push_back(fade = new ModuleFadeToBlack());
 }
 
 Application::~Application()
 {
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
 		RELEASE(*it);
 }
 
@@ -38,23 +40,35 @@ bool Application::Init()
 {
 	bool ret = true;
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init(); // we init everything, even if not anabled
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 	{
-		if((*it)->IsEnabled() == true)
+		if ((*it)->IsEnabled() == true)
 			ret = (*it)->Start();
 	}
 
 	// Start the first scene --
-	fade->FadeToBlack(scene_honda, nullptr, 3.0f);
+	fade->FadeToBlack(currentScene, nullptr, 3.0f);
 
 	return ret;
 }
 
 update_status Application::Update()
 {
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		if (currentScene == scene_ken) {
+			currentScene = scene_honda;			
+			fade->FadeToBlack(scene_honda, scene_ken, 3.0f);
+		}
+		else
+		{
+			currentScene = scene_ken;
+			fade->FadeToBlack(scene_ken, scene_honda, 3.0f);
+		}		
+	}
 	update_status ret = UPDATE_CONTINUE;
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)

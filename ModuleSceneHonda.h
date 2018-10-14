@@ -22,6 +22,10 @@ public:
 	SDL_Rect background;
 	SDL_Rect side;
 	SDL_Rect ceiling;
+	SDL_Rect pool;
+
+	Animation water;
+	Animation fuji;
 
 };
 
