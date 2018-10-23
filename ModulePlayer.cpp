@@ -30,7 +30,6 @@ ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 	backward.frames.push_back({974, 129, 57, 89});
 	backward.speed = 0.1f;
 
-	// TODO 8: setup the walk forward animation from ryu4.png
 
 	forward.frames.push_back({ 0, 131, 65, 90 });
 	forward.frames.push_back({ 75, 129, 63, 90 });
@@ -120,9 +119,6 @@ bool ModulePlayer::CleanUp()
 // Update
 update_status ModulePlayer::Update()
 {
-	// TODO 9: Draw the player with its animation
-	// make sure to detect player movement and change its
-	// position while cycling the animation(check Animation.h)
 	if (SDL_GetTicks() < timer) { //ryu is doing something
 		switch (ryuAction)
 		{

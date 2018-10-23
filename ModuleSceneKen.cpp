@@ -19,7 +19,6 @@ ModuleSceneKen::ModuleSceneKen(bool start_enabled) : Module(start_enabled)
 	ground.w = 896;
 	ground.h = 72;
 
-	// TODO 2 : setup the foreground (red ship) with
 	// coordinates x,y,w,h from ken_stage.png
 	foreground.x = 0;
 	foreground.y = 0;
@@ -36,8 +35,6 @@ ModuleSceneKen::ModuleSceneKen(bool start_enabled) : Module(start_enabled)
 	flag.frames.push_back({848, 256, 40, 40});
 	flag.frames.push_back({848, 304, 40, 40});
 	flag.speed = 0.08f;
-
-	// TODO 4: Setup Girl Animation from coordinates from ken_stage.png
 
 	girl.frames.push_back({ 624, 16, 32, 56 });
 	girl.frames.push_back({ 624, 80, 32, 56 });
@@ -82,9 +79,7 @@ bool ModuleSceneKen::Start()
 	graphics = App->textures->Load("ken_stage.png");
 
 
-	// TODO 7: Enable the player module
 	App->player->Enable();
-	// TODO 0: trigger background music
 	App->audio->PlayMusic("ken.ogg");
 	
 	return true;
@@ -104,16 +99,12 @@ bool ModuleSceneKen::CleanUp()
 // Update: draw background
 update_status ModuleSceneKen::Update()
 {
-	// TODO 5: make sure the ship goes up and down
 	float tideMovement = sinf(SDL_GetTicks() / 200) * 3; // movement = (ticks / frequency) * amplitude;
 	// Draw everything --------------------------------------
-	// TODO 1: Tweak the movement speed of the sea&sky + flag to your taste
 	App->renderer->Blit(graphics, -150, 0, &background, 0.35f); // sea and sky
 	App->renderer->Blit(graphics, 410, 8, &(flag.GetCurrentFrame()), 0.35f); // flag animation
 	App->renderer->Blit(graphics, -30, -26 + tideMovement, &foreground, 0.5f); // foreground
-	// TODO 3: Draw the ship. Be sure to tweak the speed.
 
-	// TODO 6: Draw the girl. Make sure it follows the ship movement!
 	App->renderer->Blit(graphics, 170, 103 + tideMovement, &(girl.GetCurrentFrame()), 0.5f); // gril animation
 	App->renderer->Blit(graphics, 106, 95 + tideMovement, &(dudes.GetCurrentFrame()), 0.5f); // dudes animation
 	App->renderer->Blit(graphics, 202, 103 + tideMovement, &(shitFace.GetCurrentFrame()), 0.5f); // shitFace animation
@@ -122,12 +113,6 @@ update_status ModuleSceneKen::Update()
 	App->renderer->Blit(graphics, 106, 22 + tideMovement, &(tinkyWinky.GetCurrentFrame()), 0.5f); // shitMan animation
 
 	App->renderer->Blit(graphics, 0, 170, &ground);
-
-	// TODO 10: Build an entire new scene "honda", you can find its
-	// and music in the Game/ folder
-
-	// TODO 11: Make that pressing space triggers a switch to honda logic module
-	// using FadeToBlack module
 
 	return UPDATE_CONTINUE;
 }
