@@ -14,6 +14,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{ad89cf24-f35e-4d0c-90e5-820c054c274d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlayerAnims">
+      <UniqueIdentifier>{5d532405-04c7-4e28-a532-878a47a55db0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleRender.h">
@@ -58,6 +61,12 @@
     <ClInclude Include="ModuleSceneHonda.h">
       <Filter>Game Modules</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerAnimationBase.h">
+      <Filter>PlayerAnims</Filter>
+    </ClInclude>
+    <ClInclude Include="RyuAnimations.h">
+      <Filter>PlayerAnims</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -95,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="ModuleSceneHonda.cpp">
       <Filter>Game Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="RyuAnimations.cpp">
+      <Filter>PlayerAnims</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

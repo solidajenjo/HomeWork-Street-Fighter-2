@@ -14,6 +14,13 @@ enum update_status
 	UPDATE_ERROR
 };
 
+enum playerActions
+{
+	SPECIAL,
+	PUNCH,
+	KICK
+};
+
 // Deletes a buffer
 #define RELEASE( x ) \
     {\

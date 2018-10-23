@@ -14,6 +14,7 @@ class ModuleFadeToBlack;
 class ModulePlayer;
 class ModuleSceneKen;
 class ModuleSceneHonda;
+class PlayerAnimationBase;
 
 class Application
 {
@@ -36,7 +37,7 @@ public:
 	ModulePlayer* player;
 	ModuleSceneKen* scene_ken;
 	ModuleSceneHonda* scene_honda;
-	Module* currentScene;
+	Module* currentScene;	
 
 private:
 
