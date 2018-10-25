@@ -21,7 +21,7 @@ ModulePlayer::~ModulePlayer()
 }
 
 // Load assets
-bool ModulePlayer::Start()
+bool ModulePlayer::Init()
 {
 	LOG("Loading player");
 

@@ -8,6 +8,8 @@
 #include "ModuleSceneKen.h"
 #include "ModuleSceneHonda.h"
 #include "ModulePlayer.h"
+#include "SDL/include/SDL.h"
+#include "imgui.h"
 
 using namespace std;
 
@@ -41,13 +43,7 @@ bool Application::Init()
 	bool ret = true;
 
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
-		ret = (*it)->Init(); // we init everything, even if not anabled
-
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
-	{
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->Start();
-	}
+		ret = (*it)->Init();
 
 	// Start the first scene --
 	fade->FadeToBlack(currentScene, nullptr, 3.0f);
@@ -57,31 +53,27 @@ bool Application::Init()
 
 update_status Application::Update()
 {
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		if (currentScene == scene_ken) {
-			currentScene = scene_honda;			
-			fade->FadeToBlack(scene_honda, scene_ken, 3.0f);
-		}
-		else
-		{
-			currentScene = scene_ken;
-			fade->FadeToBlack(scene_ken, scene_honda, 3.0f);
-		}		
-	}
 	update_status ret = UPDATE_CONTINUE;
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if((*it)->IsEnabled() == true) 
-			ret = (*it)->PreUpdate();
+	float startTime = SDL_GetTicks();
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if((*it)->IsEnabled() == true) 
-			ret = (*it)->Update();
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+		ret = (*it)->PreUpdate();
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if((*it)->IsEnabled() == true) 
-			ret = (*it)->PostUpdate();
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+		ret = (*it)->Update();
+
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+		ret = (*it)->PostUpdate();
+
+	float frameTime = SDL_GetTicks() - startTime;
+	float fps = 1000 / frameTime;
+
+	if (fpsLogIterator == fpsLog.size())
+		fpsLogIterator = 0;
+
+	msLog[fpsLogIterator] = frameTime;
+	fpsLog[fpsLogIterator++] = fps;
 
 	return ret;
 }

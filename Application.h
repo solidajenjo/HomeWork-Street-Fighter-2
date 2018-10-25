@@ -2,8 +2,10 @@
 #define __APPLICATION_CPP__
 
 #include<list>
+#include<vector>
 #include "Globals.h"
 #include "Module.h"
+#include "imgui.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -38,6 +40,12 @@ public:
 	ModuleSceneKen* scene_ken;
 	ModuleSceneHonda* scene_honda;
 	Module* currentScene;	
+
+	ImGuiTextBuffer consoleBuffer;
+	bool imGuiStarted = false;
+	std::vector<float> fpsLog = std::vector<float>(50);
+	std::vector<float> msLog = std::vector<float>(50);
+	int fpsLogIterator = 0;
 
 private:
 

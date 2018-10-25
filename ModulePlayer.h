@@ -16,7 +16,7 @@ public:
 	ModulePlayer(bool start_enabled = true);
 	~ModulePlayer();
 
-	bool Start();
+	bool Init();
 	update_status Update();
 	bool CleanUp();
 

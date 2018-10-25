@@ -35,6 +35,8 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
+		flags |= SDL_WINDOW_OPENGL;
+
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(window == nullptr)
@@ -46,6 +48,18 @@ bool ModuleWindow::Init()
 		{
 			//Get window surface
 			screen_surface = SDL_GetWindowSurface(window);
+		}
+		editorWindow = SDL_CreateWindow(EDITOR_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, EDITOR_WIDTH, EDITOR_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL);
+
+		if (editorWindow == NULL)
+		{
+			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			ret = false;
+		}
+		else
+		{
+			//Get window surface
+			screen_surface = SDL_GetWindowSurface(editorWindow);
 		}
 	}
 
@@ -63,6 +77,10 @@ bool ModuleWindow::CleanUp()
 		SDL_DestroyWindow(window);
 	}
 
+	if (editorWindow != nullptr)
+	{
+		SDL_DestroyWindow(editorWindow);
+	}
 	//Quit SDL subsystems
 	SDL_Quit();
 	return true;

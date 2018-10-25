@@ -1,12 +1,16 @@
 #ifndef __MODULERENDER_H__
 #define __MODULERENDER_H__
 
+#include <list>
 #include "Module.h"
 #include "Globals.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+
+class SubModuleEditor;
+typedef void *SDL_GLContext;
 
 class ModuleRender : public Module
 {
@@ -25,6 +29,13 @@ public:
 public:
 	SDL_Renderer* renderer = nullptr;
 	SDL_Rect camera;
+
+	std::list<SubModuleEditor*> editorSubmodules;
+
+
+private:
+	SDL_GLContext context;
+	ImGuiIO io;
 };
 
 #endif // __MODULERENDER_H__

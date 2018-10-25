@@ -64,7 +64,8 @@ bool ModuleSceneHonda::Start()
 }
 
 update_status ModuleSceneHonda::Update()
-{	
+{	/*
+	//TODO PRODUCE ERROR CUANDO NO ESTA CARGADA
 	App->renderer->Blit(graphics, -85, 178, &ground, 0.9f);	
 	App->renderer->Blit(graphics, -50, 48, &background, 0.55f);	
 	App->renderer->Blit(graphics, 137, 55, &(fuji.GetCurrentFrame()), 0.55f);
@@ -72,6 +73,7 @@ update_status ModuleSceneHonda::Update()
 	App->renderer->Blit(graphics, 90, 121, &pool, 0.6f);
 	App->renderer->Blit(graphics, 116, 134, &(water.GetCurrentFrame()), 0.6f);
 	App->renderer->Blit(graphics, -120, -8, &ceiling, 0.69f);
+	*/
 	return UPDATE_CONTINUE;
 }
 

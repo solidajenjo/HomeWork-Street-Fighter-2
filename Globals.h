@@ -44,10 +44,13 @@ enum playerActions
 // Configuration -----------
 #define SCREEN_WIDTH 384
 #define SCREEN_HEIGHT 224
-#define SCREEN_SIZE 2
+#define SCREEN_SIZE 4
 #define FULLSCREEN false
 #define VSYNC true
-#define TITLE "Super Awesome Game"
+#define TITLE "Street Fighter 1.99"
+#define EDITOR_TITLE "M4trix Engine"
+#define EDITOR_WIDTH 600
+#define EDITOR_HEIGHT SCREEN_HEIGHT * SCREEN_SIZE
 
 #define LEFT_BOUND 0
 #define RIGHT_BOUND -700

@@ -47,10 +47,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
+      <AdditionalIncludeDirectories>C:\Users\derek\Desktop\GAME_DEV\HomeWork-Street-Fighter-2\imgui;C:\Users\derek\Desktop\GAME_DEV\HomeWork-Street-Fighter-2\imgui\examples;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>C:\Users\derek\Desktop\GAME_DEV\Engine---Master\glew-2.1.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -61,18 +64,23 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
+      <AdditionalIncludeDirectories>C:\Users\derek\Desktop\GAME_DEV\HomeWork-Street-Fighter-2\imgui;C:\Users\derek\Desktop\GAME_DEV\HomeWork-Street-Fighter-2\imgui\examples;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>C:\Users\derek\Desktop\GAME_DEV\Engine---Master\glew-2.1.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="imgui\examples\imgui_impl_sdl.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleFadeToBlack.h" />
@@ -86,9 +94,18 @@
     <ClInclude Include="PlayerAnimationBase.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="RyuAnimations.h" />
+    <ClInclude Include="SubModuleEditor.h" />
+    <ClInclude Include="SubModuleEditorConsole.h" />
+    <ClInclude Include="SubModuleEditorFPS.h" />
+    <ClInclude Include="SubModuleEditorMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="imgui\examples\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui\examples\imgui_impl_sdl.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
@@ -101,6 +118,9 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="RyuAnimations.cpp" />
+    <ClCompile Include="SubModuleEditorConsole.cpp" />
+    <ClCompile Include="SubModuleEditorFPS.cpp" />
+    <ClCompile Include="SubModuleEditorMenu.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
