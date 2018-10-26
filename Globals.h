@@ -88,9 +88,9 @@ enum playerAnimations
 #define VSYNC true
 #define TITLE "Street Fighter 1.99"
 #define EDITOR_TITLE "M4trix Engine"
-#define EDITOR_WIDTH 600
+#define EDITOR_WIDTH 900
 #define EDITOR_HEIGHT SCREEN_HEIGHT * SCREEN_SIZE
-
+#define ANIM_NUM 34
 #define LEFT_BOUND 0
 #define RIGHT_BOUND -700
 #endif //__GLOBALS_H__

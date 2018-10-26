@@ -13,10 +13,9 @@ SubModuleEditorConsole::~SubModuleEditorConsole()
 
 bool SubModuleEditorConsole::drawSubmodule()
 {	
-	if (ImGui::TreeNodeEx("Console"))
+	if (ImGui::CollapsingHeader("Console"))
 	{		
 		ImGui::TextUnformatted(App->consoleBuffer.begin());
-		ImGui::TreePop();
 	}
 	return true;
 }

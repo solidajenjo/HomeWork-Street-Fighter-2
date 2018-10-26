@@ -11,6 +11,8 @@ public:
 	float speed;
 	vector<SDL_Rect*> frames;
 
+	int frameNum = 0;
+	int frameWidth = 0;
 private:
 	float current_frame;
 
