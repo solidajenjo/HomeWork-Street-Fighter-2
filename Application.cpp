@@ -8,6 +8,7 @@
 #include "ModuleSceneKen.h"
 #include "ModuleSceneHonda.h"
 #include "ModulePlayer.h"
+#include "ModuleEditor.h"
 #include "SDL/include/SDL.h"
 #include "imgui.h"
 
@@ -26,10 +27,13 @@ Application::Application()
 	// Game Modules
 	scene_honda = new ModuleSceneHonda(false);
 	currentScene = scene_ken = new ModuleSceneKen(false);	
-	modules.push_back(scene_ken);
-	modules.push_back(scene_honda);
+
+	//modules.push_back(scene_ken);
+	//modules.push_back(scene_honda);
+	modules.push_back(new ModuleEditor());
 	modules.push_back(player = new ModulePlayer(false));
 	modules.push_back(fade = new ModuleFadeToBlack());
+	
 }
 
 Application::~Application()
@@ -44,6 +48,7 @@ bool Application::Init()
 
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
+
 
 	// Start the first scene --
 	fade->FadeToBlack(currentScene, nullptr, 3.0f);

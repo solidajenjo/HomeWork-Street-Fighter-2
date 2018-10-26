@@ -3,11 +3,13 @@
 
 using namespace std;
 
+struct SDL_Rect;
+
 class Animation
 {
 public:
 	float speed;
-	vector<SDL_Rect> frames;
+	vector<SDL_Rect*> frames;
 
 private:
 	float current_frame;
@@ -16,7 +18,7 @@ public:
 	Animation() : frames(), speed(1.0f), current_frame(0.0f)
 	{}
 
-	SDL_Rect& GetCurrentFrame()
+	SDL_Rect* GetCurrentFrame()
 	{
 		current_frame += speed;
 		if(current_frame >= frames.size())
@@ -24,8 +26,9 @@ public:
 		return frames[(int)current_frame];
 	}
 
-	SDL_Rect& GetLastFrame()
+	SDL_Rect* GetLastFrame()
 	{
+		//TODO: Check if cleanises
 		return frames[frames.size() - 1];
 	}
 

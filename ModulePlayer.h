@@ -21,14 +21,13 @@ public:
 	bool CleanUp();
 
 public:
-
+	PlayerAnimationBase * animSheet;
 private:
 	int lastX = SCREEN_WIDTH / 2;
 	float kameSpeed, kameAngle, kamePos, playerPos, timer;
 	bool playerBusy, flipped;
 	int speed = 4;
-	playerActions playerAction;
-	PlayerAnimationBase* animSheet;
+	playerActions playerAction;	
 };
 
 #endif // __MODULEPLAYER_H__

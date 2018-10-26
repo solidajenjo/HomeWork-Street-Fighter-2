@@ -21,6 +21,45 @@ enum playerActions
 	KICK
 };
 
+enum playerAnimations
+{
+	IDLE = 0,
+	WALK,
+	JUMP,
+	FORWARD_JUMP,
+	CROUCH,
+	BLOCKING,
+	BLOCKING_CROUCH,
+	L_PUNCH,
+	M_PUNCH,
+	H_PUNCH,
+	F_L_PUNCH,
+	F_M_PUNCH,
+	F_J_PUNCH,
+	L_KICK,
+	M_KICK,
+	H_KICK,
+	F_L_KICK,
+	F_M_KICK,
+	F_H_KICK,
+	C_L_PUNCH,
+	C_M_PUNCH,
+	C_H_PUNCH,
+	C_L_KICK,
+	C_M_KICK,
+	C_H_KICK,
+	J_PUNCH,
+	J_KICK,
+	SPECIAL_1,
+	SPECIAL_2,
+	HIT,
+	FACE_HIT,
+	CROUCH_HIT,
+	KNOCK_DOWN,
+	VICTORY
+};
+
+
 // Deletes a buffer
 #define RELEASE( x ) \
     {\

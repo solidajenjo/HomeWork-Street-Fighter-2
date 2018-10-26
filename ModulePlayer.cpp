@@ -30,7 +30,7 @@ bool ModulePlayer::Init()
 	timer = 0;
 	flipped = false;
 
-	animSheet = new RyuAnimations();
+	animSheet = new RyuAnimations("ryu");
 	animSheet->setUp();
 
 	return true;
@@ -58,13 +58,13 @@ update_status ModulePlayer::Update()
 		switch (playerAction)
 		{			
 			case SPECIAL:
-				App->renderer->Blit(animSheet->graphics, playerPos - 25, 120, &animSheet->playerSpecialRect, 1.0f, flipped);
+				App->renderer->Blit(animSheet->graphics, playerPos - 25, 120, animSheet->playerSpecialRect, 1.0f, flipped);
 				break;
 			case KICK:
-				App->renderer->Blit(animSheet->graphics, playerPos - 20, 110, &(animSheet->kick.GetCurrentFrame()), 1.0f, flipped);
+				App->renderer->Blit(animSheet->graphics, playerPos - 20, 110, animSheet->kick->GetCurrentFrame(), 1.0f, flipped);
 				break;
 			case PUNCH:
-				App->renderer->Blit(animSheet->graphics, playerPos - 20, 110, &(animSheet->punch.GetCurrentFrame()), 1.0f, flipped);
+				App->renderer->Blit(animSheet->graphics, playerPos - 20, 110, animSheet->punch->GetCurrentFrame(), 1.0f, flipped);
 				break;			
 			default:
 				break;
@@ -88,14 +88,14 @@ update_status ModulePlayer::Update()
 		{
 			playerAction = KICK;			
 			timer = SDL_GetTicks() + 500;
-			animSheet->kick.reset();
+			animSheet->kick->reset();
 			playerBusy = true;
 		}
 		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 		{
 			playerAction = PUNCH;			
 			timer = SDL_GetTicks() + 500;
-			animSheet->punch.reset();
+			animSheet->punch->reset();
 			playerBusy = true;
 		}
 		if (!playerBusy)
@@ -123,14 +123,14 @@ update_status ModulePlayer::Update()
 			}
 			if (playerPos < lastX) // moving forward
 			{
-				App->renderer->Blit(animSheet->graphics, playerPos, 120, &(animSheet->forward->GetCurrentFrame()), 1.0f, flipped);
+				App->renderer->Blit(animSheet->graphics, playerPos, 120, animSheet->forward->GetCurrentFrame(), 1.0f, flipped);
 			}
 			else if (playerPos > lastX) // moving backward
 			{
-				App->renderer->Blit(animSheet->graphics, playerPos, 120, &(animSheet->backward->GetCurrentFrame()), 1.0f, flipped);
+				App->renderer->Blit(animSheet->graphics, playerPos, 120, animSheet->backward->GetCurrentFrame(), 1.0f, flipped);
 			}
 			else { //idle
-				App->renderer->Blit(animSheet->graphics, playerPos, 120, &(animSheet->idle.GetCurrentFrame()), 1.0f, flipped);
+				App->renderer->Blit(animSheet->graphics, playerPos, 120, animSheet->idle->GetCurrentFrame(), 1.0f, flipped);
 			}		
 		}
 	}

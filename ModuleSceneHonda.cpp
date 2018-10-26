@@ -38,13 +38,13 @@ ModuleSceneHonda::ModuleSceneHonda(bool start_enabled) : Module(start_enabled)
 	pool.w = 339;
 	pool.h = 58;
 
-	water.frames.push_back({ 8, 448, 284, 8 });
-	water.frames.push_back({ 296, 448, 284, 12 });
-	water.frames.push_back({ 588, 448, 284, 19 });
+	water.frames.push_back(new SDL_Rect{ 8, 448, 284, 8 });
+	water.frames.push_back(new SDL_Rect{ 296, 448, 284, 12 });
+	water.frames.push_back(new SDL_Rect{ 588, 448, 284, 19 });
 	water.speed = 0.1f;
 
-	fuji.frames.push_back({224, 64, 224, 104});
-	fuji.frames.push_back({ 456, 64, 224, 104 });	
+	fuji.frames.push_back(new SDL_Rect{224, 64, 224, 104});
+	fuji.frames.push_back(new SDL_Rect{ 456, 64, 224, 104 });
 	fuji.speed = 0.05f;
 
 }

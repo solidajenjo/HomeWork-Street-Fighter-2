@@ -6,7 +6,7 @@ class RyuAnimations :
 	public PlayerAnimationBase
 {
 public:
-	RyuAnimations();
+	RyuAnimations(char* name);
 	~RyuAnimations();
 
 	bool setUp();

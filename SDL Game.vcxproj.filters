@@ -91,6 +91,12 @@
     <ClInclude Include="SubModuleEditorMenu.h">
       <Filter>Editor</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleEditor.h">
+      <Filter>Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="SubModuleEditorAnimator.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -132,15 +138,6 @@
     <ClCompile Include="RyuAnimations.cpp">
       <Filter>PlayerAnims</Filter>
     </ClCompile>
-    <ClCompile Include="SubModuleEditorConsole.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="SubModuleEditorFPS.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="SubModuleEditorMenu.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
       <Filter>ImGUI</Filter>
     </ClCompile>
@@ -155,6 +152,24 @@
     </ClCompile>
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>ImGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleEditor.cpp">
+      <Filter>Core Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="SubModuleEditorConsole.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SubModuleEditorFPS.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SubModuleEditorMenu.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="SubModuleEditorAnimator.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerAnimationBase.cpp">
+      <Filter>PlayerAnims</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
