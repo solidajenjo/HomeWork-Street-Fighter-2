@@ -37,7 +37,7 @@ bool ModuleWindow::Init()
 
 		flags |= SDL_WINDOW_OPENGL;
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width / SCREEN_SIZE, height / SCREEN_SIZE, flags);
 
 		if(window == nullptr)
 		{

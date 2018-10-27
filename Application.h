@@ -46,6 +46,7 @@ public:
 	std::vector<float> fpsLog = std::vector<float>(50);
 	std::vector<float> msLog = std::vector<float>(50);
 	int fpsLogIterator = 0;
+	bool playerActivated = false;
 
 private:
 

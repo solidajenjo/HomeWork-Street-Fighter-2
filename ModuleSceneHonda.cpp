@@ -54,7 +54,7 @@ ModuleSceneHonda::~ModuleSceneHonda()
 {
 }
 
-bool ModuleSceneHonda::Start()
+bool ModuleSceneHonda::Init()
 {
 	LOG("Loading honda scene");
 	graphics = App->textures->Load("honda_stage.png");

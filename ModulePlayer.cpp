@@ -54,6 +54,7 @@ bool ModulePlayer::CleanUp()
 // Update
 update_status ModulePlayer::Update()
 {
+	if (!App->playerActivated) return UPDATE_CONTINUE;
 	if (SDL_GetTicks() < timer) { //player is doing something
 		switch (playerAction)
 		{			

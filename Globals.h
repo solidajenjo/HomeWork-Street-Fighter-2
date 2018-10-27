@@ -81,15 +81,15 @@ enum playerAnimations
 	 }
 
 // Configuration -----------
-#define SCREEN_WIDTH 384
-#define SCREEN_HEIGHT 224
-#define SCREEN_SIZE 4
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
+#define SCREEN_SIZE 3
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "Street Fighter 1.99"
 #define EDITOR_TITLE "M4trix Engine"
 #define EDITOR_WIDTH 900
-#define EDITOR_HEIGHT SCREEN_HEIGHT * SCREEN_SIZE
+#define EDITOR_HEIGHT SCREEN_HEIGHT
 #define ANIM_NUM 34
 #define LEFT_BOUND 0
 #define RIGHT_BOUND -700

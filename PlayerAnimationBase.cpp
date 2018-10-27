@@ -15,9 +15,12 @@ PlayerAnimationBase::PlayerAnimationBase(char * name)
 	SDL_QueryTexture(sheetTexture, nullptr, nullptr, &w, &h);
 	sheetRect = new SDL_Rect();
 	sheetRect->x = 0;
-	sheetRect->y = 500;
+	sheetRect->y = 0;
 	sheetRect->w = w;
 	sheetRect->h = 130;
+
+	sheetWidth = w;
+	sheetHeight = h;
 
 	for (int i = 0; i < ANIM_NUM; ++i) animations[i] = new Animation();
 }

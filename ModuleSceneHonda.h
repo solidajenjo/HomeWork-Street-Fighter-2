@@ -12,7 +12,7 @@ public:
 
 	ModuleSceneHonda(bool start_enabled);
 	~ModuleSceneHonda();
-	bool Start();
+	bool Init();
 	update_status Update();
 	bool CleanUp();
 public:

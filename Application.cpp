@@ -51,7 +51,7 @@ bool Application::Init()
 
 
 	// Start the first scene --
-	fade->FadeToBlack(currentScene, nullptr, 3.0f);
+	//fade->FadeToBlack(currentScene, nullptr, 3.0f);
 
 	return ret;
 }

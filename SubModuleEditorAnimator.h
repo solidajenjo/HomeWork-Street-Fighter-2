@@ -17,7 +17,8 @@ public:
 	//members
 	
 	bool active = false;
-	int xSheet = 0, ySheet = 0;
+	bool loopAnimations = false;
+	int gizmoX = 200, gizmoY = 900, gizmoSize = 300;
 };
 
 #endif // !

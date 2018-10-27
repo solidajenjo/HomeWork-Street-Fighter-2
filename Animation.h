@@ -13,6 +13,7 @@ public:
 
 	int frameNum = 0;
 	int frameWidth = 0;
+	bool isLoop = false;
 private:
 	float current_frame;
 

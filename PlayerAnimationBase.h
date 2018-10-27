@@ -27,6 +27,9 @@ public:
 	SDL_Texture* graphics = nullptr;
 	SDL_Texture* sheetTexture = nullptr;
 
+	int sheetWidth;
+	int sheetHeight;
+
 	SDL_Rect* sheetRect;
 	
 	//34 ANIMATIONS

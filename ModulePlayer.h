@@ -23,7 +23,7 @@ public:
 public:
 	PlayerAnimationBase * animSheet;
 private:
-	int lastX = SCREEN_WIDTH / 2;
+	int lastX = 100;
 	float kameSpeed, kameAngle, kamePos, playerPos, timer;
 	bool playerBusy, flipped;
 	int speed = 4;
