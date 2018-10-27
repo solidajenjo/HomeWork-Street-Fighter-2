@@ -12,29 +12,25 @@ class PlayerAnimationBase
 {
 public:
 	//methods
-	PlayerAnimationBase(char* name);
+	PlayerAnimationBase(const char* name, bool& ok);
 	
-	~PlayerAnimationBase() {};
+	~PlayerAnimationBase();
 
-	virtual bool setUp() {
-		return true;
-	};
-
-	bool save();
-	bool load();
+	bool setUp(const char* name);
+	bool save(const char* filename) const;
+	bool load(const char* filename);
 
 	//members
-	SDL_Texture* graphics = nullptr;
 	SDL_Texture* sheetTexture = nullptr;
+	SDL_Rect* sheetRect = nullptr;
 
 	int sheetWidth;
 	int sheetHeight;
 
-	SDL_Rect* sheetRect;
-	
 	//34 ANIMATIONS
 	std::vector<Animation*> animations = std::vector<Animation*>(ANIM_NUM);
-	char* name;
+	char* name = nullptr;
+	char* sheetFileName = nullptr;
 
 	char* ANIM_NAMES[ANIM_NUM] = { "IDLE","WALK","JUMP","FORWARD_JUMP","CROUCH","BLOCKING","BLOCKING_CROUCH",
 		"L_PUNCH","M_PUNCH","H_PUNCH","F_L_PUNCH","F_M_PUNCH","F_J_PUNCH","L_KICK","M_KICK","H_KICK",
@@ -43,15 +39,6 @@ public:
 		"VICTORY" };
 
 	//TODO: Remove old animations
-	Animation* idle;
-	Animation* backward;
-	Animation* forward;
-	Animation* kick;
-	Animation* punch;
-	Animation* special;
-	
-	SDL_Rect* playerSpecialRect;
-	SDL_Rect* specialRect;
-	SDL_Rect* background;
+
 };
 #endif

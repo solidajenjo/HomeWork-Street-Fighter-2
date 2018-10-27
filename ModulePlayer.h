@@ -21,7 +21,7 @@ public:
 	bool CleanUp();
 
 public:
-	PlayerAnimationBase * animSheet;
+	PlayerAnimationBase* animSheet;
 private:
 	int lastX = 100;
 	float kameSpeed, kameAngle, kamePos, playerPos, timer;

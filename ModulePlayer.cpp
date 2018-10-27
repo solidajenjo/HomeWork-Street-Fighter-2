@@ -7,9 +7,7 @@
 #include "ModuleTextures.h"
 #include "SDL/include/SDL.h"
 #include "PlayerAnimationBase.h"
-#include "RyuAnimations.h"
 
-// Reference at https://www.youtube.com/watch?v=OEhmUuehGOA
 ModulePlayer::ModulePlayer(bool start_enabled) : Module(start_enabled)
 {
 
@@ -30,8 +28,7 @@ bool ModulePlayer::Init()
 	timer = 0;
 	flipped = false;
 
-	animSheet = new RyuAnimations("ryu");
-	animSheet->setUp();
+	
 
 	return true;
 }
@@ -41,7 +38,7 @@ bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
 
-	App->textures->Unload(animSheet->graphics);
+	//App->textures->Unload(animSheet->graphics);
 	//TODO Clean memory
 	/*
 	delete animSheet->forward;
@@ -54,6 +51,7 @@ bool ModulePlayer::CleanUp()
 // Update
 update_status ModulePlayer::Update()
 {
+	/*
 	if (!App->playerActivated) return UPDATE_CONTINUE;
 	if (SDL_GetTicks() < timer) { //player is doing something
 		switch (playerAction)
@@ -107,7 +105,7 @@ update_status ModulePlayer::Update()
 
 			if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 				App->renderer->camera.y -= speed;
-			*/
+			
 			if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			{
 				if (playerPos > LEFT_BOUND)
@@ -136,6 +134,6 @@ update_status ModulePlayer::Update()
 		}
 	}
 	lastX = playerPos;	
-	
+	*/
 	return UPDATE_CONTINUE;
 }

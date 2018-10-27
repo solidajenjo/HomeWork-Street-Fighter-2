@@ -96,7 +96,6 @@
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="PlayerAnimationBase.h" />
     <ClInclude Include="Point.h" />
-    <ClInclude Include="RyuAnimations.h" />
     <ClInclude Include="SubModuleEditor.h" />
     <ClInclude Include="SubModuleEditorAnimator.h" />
     <ClInclude Include="SubModuleEditorConsole.h" />
@@ -123,7 +122,6 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PlayerAnimationBase.cpp" />
-    <ClCompile Include="RyuAnimations.cpp" />
     <ClCompile Include="SubModuleEditorAnimator.cpp" />
     <ClCompile Include="SubModuleEditorConsole.cpp" />
     <ClCompile Include="SubModuleEditorFPS.cpp" />

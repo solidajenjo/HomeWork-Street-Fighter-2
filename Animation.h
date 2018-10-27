@@ -10,6 +10,10 @@ class Animation
 public:
 	float speed;
 	vector<SDL_Rect*> frames;
+	vector<SDL_Rect*> headColliders;
+	vector<SDL_Rect*> bodyColliders;
+	vector<SDL_Rect*> legsColliders;
+	vector<SDL_Rect*> damageColliders;
 
 	int frameNum = 0;
 	int frameWidth = 0;
@@ -21,6 +25,18 @@ public:
 	Animation() : frames(), speed(1.0f), current_frame(0.0f)
 	{}
 
+	~Animation()
+	{
+		for (int i = 0; i < frames.size(); i++)
+		{
+			delete(frames[i]);
+			delete(headColliders[i]);
+			delete(bodyColliders[i]);
+			delete(legsColliders[i]);
+			delete(damageColliders[i]);
+		}
+	}
+
 	SDL_Rect* GetCurrentFrame()
 	{
 		current_frame += speed;
@@ -31,7 +47,6 @@ public:
 
 	SDL_Rect* GetLastFrame()
 	{
-		//TODO: Check if cleanises
 		return frames[frames.size() - 1];
 	}
 
