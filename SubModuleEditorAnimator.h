@@ -25,7 +25,7 @@ public:
 	int gizmoX = 200, gizmoY = 900, gizmoSize = 300;
 
 	PlayerAnimationBase* animSheet = nullptr;
-	int currentAnimation = -1;
+	int currentAnimation = 0, currentFrame = 0;
 };
 
 #endif // !

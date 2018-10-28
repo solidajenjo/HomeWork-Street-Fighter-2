@@ -22,20 +22,23 @@ PlayerAnimationBase::~PlayerAnimationBase()
 
 	if (sheetRect != nullptr)
 		delete sheetRect;
-
 	App->textures->Unload(sheetTexture);
 }
 
 bool PlayerAnimationBase::setUp(const char * name)
 {
+	if (*name == 0)
+		return false;
 	std::string path = std::string(name);
 	path = "Graphics/" + path;
 	
-	sheetFileName = (char*)malloc(sizeof(char) * strlen(name));
-	strcpy(sheetFileName, name);
+	strcpy(&sheetFileName[0], name);
+	App->textures->Unload(sheetTexture); //memory leak when loading file fix
 	sheetTexture = App->textures->Load(path.c_str());
 	if (sheetTexture == nullptr)
+	{
 		return false;
+	}
 	int w;
 	int h;
 	SDL_QueryTexture(sheetTexture, nullptr, nullptr, &w, &h);
@@ -47,8 +50,12 @@ bool PlayerAnimationBase::setUp(const char * name)
 
 	sheetWidth = w;
 	sheetHeight = h;
-
-	for (int i = 0; i < ANIM_NUM; ++i) animations[i] = new Animation();
+	for (int i = 0; i < ANIM_NUM; ++i)
+	{
+		if (animations[i] != nullptr)
+			delete animations[i];
+		animations[i] = new Animation();
+	}
 	return true;
 }
 
@@ -59,7 +66,7 @@ bool PlayerAnimationBase::save(const char* filename) const
 	if (fp == nullptr)
 		return false;
 	
-	fwrite(sheetFileName, sizeof(char), strlen(sheetFileName), fp);
+	fwrite(sheetFileName, sizeof(char), strlen(&sheetFileName[0]), fp);
 	fwrite("\n", sizeof(char), 1, fp);
 	char* buffer = (char*)malloc(sizeof(char) * 50);
 	
@@ -149,7 +156,7 @@ bool PlayerAnimationBase::load(const char* filename)
 {
 	FILE * fp;
 	char * line = NULL;
-	size_t len = 300;
+	size_t len = 10000;
 
 	fopen_s(&fp, filename, "r");
 	
@@ -165,8 +172,8 @@ bool PlayerAnimationBase::load(const char* filename)
 	int j = 0;
 	while (line[i] != '\n')
 		sheetName[j++] = line[i++];
-	sheetName[j] = 0;	
-	sheetFileName = sheetName;
+	sheetName[j] = 0;
+	strcpy(&sheetFileName[0], sheetName);
 
 	setUp(sheetName);
 	
@@ -191,9 +198,6 @@ bool PlayerAnimationBase::load(const char* filename)
 		buffer[j++] = 0;
 		i++;
 		float speed = atof(buffer);
-		if (animations[animCount] != nullptr)
-			delete animations[animCount];
-		animations[animCount] = new Animation();
 		animations[animCount]->frameNum = nFrames;
 		animations[animCount]->speed = speed;
 
@@ -334,5 +338,7 @@ bool PlayerAnimationBase::load(const char* filename)
 
 	fclose(fp);
 	free(line);
+	
+
 	return true;
 }

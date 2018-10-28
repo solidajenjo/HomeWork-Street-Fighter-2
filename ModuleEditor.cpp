@@ -22,6 +22,10 @@ ModuleEditor::ModuleEditor() : Module(true)
 
 ModuleEditor::~ModuleEditor()
 {
+	for (std::list<SubModuleEditor*>::iterator it = editorSubmodules.begin(); it != editorSubmodules.end(); ++it)
+	{
+		delete (*it);
+	}
 }
 
 bool ModuleEditor::Init()
@@ -95,6 +99,5 @@ update_status ModuleEditor::PostUpdate()
 
 bool ModuleEditor::CleanUp()
 {
-	//TODO:Clean
 	return true;
 }

@@ -30,7 +30,7 @@ public:
 	//34 ANIMATIONS
 	std::vector<Animation*> animations = std::vector<Animation*>(ANIM_NUM);
 	char* name = nullptr;
-	char* sheetFileName = nullptr;
+	char sheetFileName[50];
 
 	char* ANIM_NAMES[ANIM_NUM] = { "IDLE","WALK","JUMP","FORWARD_JUMP","CROUCH","BLOCKING","BLOCKING_CROUCH",
 		"L_PUNCH","M_PUNCH","H_PUNCH","F_L_PUNCH","F_M_PUNCH","F_J_PUNCH","L_KICK","M_KICK","H_KICK",
