@@ -45,7 +45,11 @@ bool SubModuleEditorAnimator::drawSubmodule()
 				if (!ok)
 					strcpy(status, "Error loading texture sheet.");
 				else
+				{
 					strcpy(status, "New animation object ready.");
+					ySheet = animSheet->sheetHeight;
+					animSheet->sheetRect->h = animSheet->sheetHeight;
+				}
 			}				
 		}
 
@@ -85,6 +89,8 @@ bool SubModuleEditorAnimator::drawSubmodule()
 				{
 					strcpy(status, "File loaded.");
 					strcpy(sheetName, &animSheet->sheetFileName[0]);
+					ySheet = animSheet->sheetHeight;
+					animSheet->sheetRect->h = animSheet->sheetHeight;
 				}
 				
 			}
@@ -92,8 +98,7 @@ bool SubModuleEditorAnimator::drawSubmodule()
 		ImGui::InputText("File name", filename, 50);		
 		ImGui::InputText("TextureSheet File name", sheetName, 50);
 		if (animSheet == nullptr || !ok)
-			return true;
-		ImGui::SliderInt("Low cut of animation sequence", &animSheet->sheetRect->h, 10, 200);
+			return true;		
 		ImGui::PushItemWidth(196.f);
 		ImGui::InputInt("Gizmo x", &gizmoX);
 		ImGui::SameLine();
@@ -126,21 +131,33 @@ bool SubModuleEditorAnimator::drawSubmodule()
 		}
 		ImGui::SliderInt("Frame", &currentFrame, 0, animSheet->animations[i]->frameNum - 1);
 		ImGui::InputInt("# of frames", &animSheet->animations[i]->frameNum);
+		animSheet->animations[i]->frameNum = std::clamp(animSheet->animations[i]->frameNum, 1, 20);
 		ImGui::InputInt("Frame width(Auto calculation)", &animSheet->animations[i]->frameWidth);
 		ImGui::InputFloat("Animation speed", &animSheet->animations[i]->speed);
 		ImGui::PushItemWidth(190.f);
-		ImGui::InputInt("First Frame x", &animSheet->sheetRect->x);
+		ImGui::InputInt("First Frame x", &xSheet);
 		animSheet->sheetRect->x = std::clamp(animSheet->sheetRect->x, 0, animSheet->sheetWidth);
 		ImGui::SameLine();
-		ImGui::InputInt("First Frame y", &animSheet->sheetRect->y);
+		ImGui::InputInt("First Frame y", &ySheet);
 		animSheet->sheetRect->y = std::clamp(animSheet->sheetRect->y, 0, animSheet->sheetHeight);
 		ImGui::PopItemWidth();
+		ImGui::SliderInt("Low cut of animation sequence", &lowCut, 10, animSheet->sheetHeight);
 		ImGui::Checkbox("Is Loop", &animSheet->animations[i]->isLoop);
 
 		if (ImGui::Button("Auto calculate"))
 		{
-		std::string message = "Auto calculating frames for " + std::string(animSheet->ANIM_NAMES[i]);
-		LOG(message.data());
+			std::string message = "Auto calculating frames for " + std::string(animSheet->ANIM_NAMES[i]);
+			LOG(message.c_str());
+			int frameWidth = animSheet->animations[i]->frameWidth;
+			int frameHeight = animSheet->sheetRect->h;
+			int xStart = -xSheet;
+			int yStart = ySheet - animSheet->sheetRect->h;
+			for (int ii = 0; ii < animSheet->animations[i]->frameNum; ++ii) {
+				animSheet->animations[i]->frames[ii]->x = ii * frameWidth + xStart;
+				animSheet->animations[i]->frames[ii]->y = -yStart;
+				animSheet->animations[i]->frames[ii]->w = frameWidth;
+				animSheet->animations[i]->frames[ii]->h = lowCut;
+			}
 		}
 		if (animSheet->animations[i]->frameNum > 0 && animSheet->animations[i]->frameNum != animSheet->animations[i]->frames.size()) {
 			animSheet->animations[i]->frames.resize(animSheet->animations[i]->frameNum);
@@ -158,88 +175,83 @@ bool SubModuleEditorAnimator::drawSubmodule()
 					animSheet->animations[i]->damageColliders[j] = new SDL_Rect({ 0,0,0,0 });
 				}
 		}
-		//TODO:free and delete frames erased from vector??
-		for (int j = 0; j < animSheet->animations[i]->frameNum; ++j)
+			
+		ImGui::PushItemWidth(100.f);
+		ImGui::InputInt("x", &animSheet->animations[i]->frames[currentFrame]->x);
+		ImGui::SameLine();
+		ImGui::InputInt("y", &animSheet->animations[i]->frames[currentFrame]->y);
+		ImGui::InputInt("w", &animSheet->animations[i]->frames[currentFrame]->w);
+		ImGui::SameLine();
+		ImGui::InputInt("h", &animSheet->animations[i]->frames[currentFrame]->h);
+
+		if (ImGui::TreeNode("Head collider"))
 		{
-
-			char buffer[50];
-			char buffer2[50];
-			strcpy(buffer, "Frame ");
-			strcat(buffer, itoa(j, buffer2, 10));
-			if (ImGui::TreeNode(buffer)) {
-				ImGui::PushItemWidth(100.f);
-				ImGui::InputInt("x", &animSheet->animations[i]->frames[j]->x);
-				ImGui::SameLine();
-				ImGui::InputInt("y", &animSheet->animations[i]->frames[j]->y);
-				ImGui::InputInt("w", &animSheet->animations[i]->frames[j]->w);
-				ImGui::SameLine();
-				ImGui::InputInt("h", &animSheet->animations[i]->frames[j]->h);
-
-				if (ImGui::TreeNode("Head collider"))
-				{
-					ImGui::InputInt("x", &animSheet->animations[i]->headColliders[j]->x);
-					ImGui::SameLine();
-					ImGui::InputInt("y", &animSheet->animations[i]->headColliders[j]->y);
-					ImGui::InputInt("w", &animSheet->animations[i]->headColliders[j]->w);
-					ImGui::SameLine();
-					ImGui::InputInt("h", &animSheet->animations[i]->headColliders[j]->h);
-					ImGui::TreePop();
-				}
-
-				if (ImGui::TreeNode("Body collider"))
-				{
-					ImGui::InputInt("x", &animSheet->animations[i]->bodyColliders[j]->x);
-					ImGui::SameLine();
-					ImGui::InputInt("y", &animSheet->animations[i]->bodyColliders[j]->y);
-					ImGui::InputInt("w", &animSheet->animations[i]->bodyColliders[j]->w);
-					ImGui::SameLine();
-					ImGui::InputInt("h", &animSheet->animations[i]->bodyColliders[j]->h);
-					ImGui::TreePop();
-				}
-
-				if (ImGui::TreeNode("Legs collider"))
-				{
-					ImGui::InputInt("x", &animSheet->animations[i]->legsColliders[j]->x);
-					ImGui::SameLine();
-					ImGui::InputInt("y", &animSheet->animations[i]->legsColliders[j]->y);
-					ImGui::InputInt("w", &animSheet->animations[i]->legsColliders[j]->w);
-					ImGui::SameLine();
-					ImGui::InputInt("h", &animSheet->animations[i]->legsColliders[j]->h);
-					ImGui::TreePop();
-				}
-
-				if (ImGui::TreeNode("Damage collider"))
-				{
-					ImGui::InputInt("x", &animSheet->animations[i]->damageColliders[j]->x);
-					ImGui::SameLine();
-					ImGui::InputInt("y", &animSheet->animations[i]->damageColliders[j]->y);
-					ImGui::InputInt("w", &animSheet->animations[i]->damageColliders[j]->w);
-					ImGui::SameLine();
-					ImGui::InputInt("h", &animSheet->animations[i]->damageColliders[j]->h);
-					ImGui::TreePop();
-				}
-				ImGui::PopItemWidth();
-				ImGui::TreePop();
-			}
+			ImGui::InputInt("x", &animSheet->animations[i]->headColliders[currentFrame]->x);
+			ImGui::SameLine();
+			ImGui::InputInt("y", &animSheet->animations[i]->headColliders[currentFrame]->y);
+			ImGui::InputInt("w", &animSheet->animations[i]->headColliders[currentFrame]->w);
+			ImGui::SameLine();
+			ImGui::InputInt("h", &animSheet->animations[i]->headColliders[currentFrame]->h);
+			ImGui::TreePop();
 		}
 
+		if (ImGui::TreeNode("Body collider"))
+		{
+			ImGui::InputInt("x", &animSheet->animations[i]->bodyColliders[currentFrame]->x);
+			ImGui::SameLine();
+			ImGui::InputInt("y", &animSheet->animations[i]->bodyColliders[currentFrame]->y);
+			ImGui::InputInt("w", &animSheet->animations[i]->bodyColliders[currentFrame]->w);
+			ImGui::SameLine();
+			ImGui::InputInt("h", &animSheet->animations[i]->bodyColliders[currentFrame]->h);
+			ImGui::TreePop();
+		}
 
+		if (ImGui::TreeNode("Legs collider"))
+		{
+			ImGui::InputInt("x", &animSheet->animations[i]->legsColliders[currentFrame]->x);
+			ImGui::SameLine();
+			ImGui::InputInt("y", &animSheet->animations[i]->legsColliders[currentFrame]->y);
+			ImGui::InputInt("w", &animSheet->animations[i]->legsColliders[currentFrame]->w);
+			ImGui::SameLine();
+			ImGui::InputInt("h", &animSheet->animations[i]->legsColliders[currentFrame]->h);
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("Damage collider"))
+		{
+			ImGui::InputInt("x", &animSheet->animations[i]->damageColliders[currentFrame]->x);
+			ImGui::SameLine();
+			ImGui::InputInt("y", &animSheet->animations[i]->damageColliders[currentFrame]->y);
+			ImGui::InputInt("w", &animSheet->animations[i]->damageColliders[currentFrame]->w);
+			ImGui::SameLine();
+			ImGui::InputInt("h", &animSheet->animations[i]->damageColliders[currentFrame]->h);
+			ImGui::TreePop();
+		}
+		ImGui::PopItemWidth();
 	}
 	if (active) {
-		App->renderer->Blit(animSheet->sheetTexture, 0, 0, animSheet->sheetRect);
+		App->renderer->Blit(animSheet->sheetTexture, xSheet * SCREEN_SIZE, ySheet * SCREEN_SIZE, animSheet->sheetRect);
+		SDL_SetRenderDrawColor(App->renderer->renderer, 0, 0, 0, 255);
+		
+		SDL_Surface* blackBox = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT / 2, 32, 0, 0, 0, 0);
+		SDL_FillRect(blackBox, NULL, SDL_MapRGB(blackBox->format, 0, 0, 0));
+		SDL_FreeSurface(blackBox);
+		SDL_Rect blackBoxRect = { 0, SCREEN_HEIGHT / 2, SCREEN_WIDTH, SCREEN_HEIGHT / 2 };
+		SDL_RenderFillRect(App->renderer->renderer, &blackBoxRect);
+
 		SDL_SetRenderDrawColor(App->renderer->renderer, 255, 0, 0, 255);
 		int x1 = 0;
-		int x2 = animSheet->sheetRect->w;
-		int y1 = /*animSheet->sheetRect->y + */animSheet->sheetRect->h * SCREEN_SIZE;
+		int x2 = animSheet->sheetRect->w * SCREEN_SIZE;
+		int y1 = lowCut * SCREEN_SIZE;
 		int y2 = y1;
 		SDL_RenderDrawLine(App->renderer->renderer, x1, y1, x2, y2);
 		if (loopAnimations  && animSheet->animations[currentAnimation] != nullptr && animSheet->animations[currentAnimation]->frameNum > 0)
-			App->renderer->Blit(animSheet->sheetTexture, 100, 220, animSheet->animations[currentAnimation]->GetCurrentFrame(), 1.0f, false);
+			App->renderer->Blit(animSheet->sheetTexture, xFrame * SCREEN_SIZE, gizmoY, animSheet->animations[currentAnimation]->GetCurrentFrame(), 1.0f, false);
 		else
 		{
 			if (animSheet->animations[currentAnimation] != nullptr && animSheet->animations[currentAnimation]->frameNum > 0)
 			{
-				App->renderer->Blit(animSheet->sheetTexture, 100, 220, animSheet->animations[currentAnimation]->frames[currentFrame], 1.0f, false);
+				App->renderer->Blit(animSheet->sheetTexture, xFrame * SCREEN_SIZE, gizmoY, animSheet->animations[currentAnimation]->frames[currentFrame], 1.0f, false);
 			}
 		}
 		SDL_RenderDrawLine(App->renderer->renderer, gizmoX, gizmoY, gizmoX + gizmoSize, gizmoY);

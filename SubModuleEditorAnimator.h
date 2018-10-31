@@ -22,10 +22,10 @@ public:
 	char filename[50];
 	char status[50];
 	char sheetName[50];
-	int gizmoX = 200, gizmoY = 900, gizmoSize = 300;
+	int gizmoX = 100, gizmoY = 1000, gizmoSize = 300, xSheet = 0, ySheet = 0, xFrame = 60, yFrame = 340;
 
 	PlayerAnimationBase* animSheet = nullptr;
-	int currentAnimation = 0, currentFrame = 0;
+	int currentAnimation = 0, currentFrame = 0, lowCut = 50;
 };
 
 #endif // !

@@ -15,7 +15,7 @@ public:
 	vector<SDL_Rect*> legsColliders;
 	vector<SDL_Rect*> damageColliders;
 
-	int frameNum = 0;
+	int frameNum = 1;
 	int frameWidth = 0;
 	bool isLoop = false;
 private:
@@ -23,7 +23,14 @@ private:
 
 public:
 	Animation() : frames(), speed(1.0f), current_frame(0.0f)
-	{}
+	{
+		frames.push_back(new SDL_Rect({ 0,0,0,0 }));
+		headColliders.push_back(new SDL_Rect({ 0,0,0,0 }));
+		bodyColliders.push_back(new SDL_Rect({ 0,0,0,0 }));
+		legsColliders.push_back(new SDL_Rect({ 0,0,0,0 }));
+		damageColliders.push_back(new SDL_Rect({ 0,0,0,0 }));
+
+	}
 
 	~Animation()
 	{

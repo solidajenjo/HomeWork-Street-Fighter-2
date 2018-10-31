@@ -148,7 +148,7 @@ bool PlayerAnimationBase::save(const char* filename) const
 		}
 		fwrite("\n", sizeof(char), 1, fp);
 	}
-	fclose(fp);
+	fclose(fp);	
 	return true;
 }
 
@@ -200,9 +200,13 @@ bool PlayerAnimationBase::load(const char* filename)
 		float speed = atof(buffer);
 		animations[animCount]->frameNum = nFrames;
 		animations[animCount]->speed = speed;
-
+		animations[animCount]->frames.resize(0);
+		animations[animCount]->headColliders.resize(0);
+		animations[animCount]->bodyColliders.resize(0);
+		animations[animCount]->legsColliders.resize(0);
+		animations[animCount]->damageColliders.resize(0);
 		for (int ii = 0; ii < nFrames; ii++)
-		{			
+		{	
 			j = 0;
 			while (line[i] != '#')
 				buffer[j++] = line[i++];
